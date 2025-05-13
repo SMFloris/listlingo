@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checklist List</title>
+</head>
+<body>
+    <h1>Checklists</h1>
+    <ul>
+        {% for checklist in checklists %}
+            <li><a href="/checklist/{{ checklist.url }}">{{ checklist.url }}</a> ({{ checklist.created_at }})</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

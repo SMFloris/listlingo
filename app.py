@@ -83,5 +83,18 @@ def checklist():
     return render_template("checklist.html", items=items)
 
 
+@app.route("/checklist/<checklist_url>")
+def view_checklist(checklist_url):
+    db = get_db()
+    row = db.execute("SELECT items FROM checklist WHERE url = ?", (checklist_url,)).fetchone()
+    db.close()
+    
+    if not row:
+        return "Checklist not found", 404
+    
+    items = json.loads(row[0])
+    return render_template("checklist.html", items=items)
+
+
 if __name__ == "__main__":
     app.run(debug=True, port="3030")
