@@ -21,17 +21,19 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
+
 def save_checklist(url, items):
     """Save a checklist to the database."""
     db = get_db()
     try:
-        db.execute("INSERT INTO checklist (url, items) VALUES (?, ?)", 
-                  (url, json.dumps(items)))
+        db.execute("INSERT INTO checklist (url, items) VALUES (?, ?)",
+                   (url, json.dumps(items)))
         db.commit()
     except Exception as e:
         print(f"Error saving to database: {str(e)}")
     finally:
         db.close()
+
 
 def list_to_items(input_str):
     pattern = r'(\w+)\s+x\s+(\d+)(\w*)'
@@ -91,7 +93,8 @@ def index():
                     "<think>\n\n</think>\n\n")
                 items = list_to_items(response)
                 # Save to database
-                url = "checklist_" + str(int(time.time()))  # Generate a unique URL
+                # Generate a unique URL
+                url = "checklist_" + str(int(time.time()))
                 save_checklist(url, items)
             except Exception as e:
                 response = f"Error communicating with Ollama: {str(e)}"
@@ -102,10 +105,11 @@ def index():
 def view_checklist(checklist_url):
     db = get_db()
     try:
-        row = db.execute("SELECT items FROM checklist WHERE url = ?", (checklist_url,)).fetchone()
+        row = db.execute(
+            "SELECT items FROM checklist WHERE url = ?", (checklist_url,)).fetchone()
         if not row:
             return "Checklist not found", 404
-        
+
         items = json.loads(row[0])
         return render_template("checklist.html", items=items)
     finally:
