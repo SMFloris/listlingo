@@ -4,6 +4,7 @@ import requests
 import re
 import time
 import json
+import os
 
 app = Flask(__name__)
 
@@ -23,10 +24,14 @@ def get_db():
 def save_checklist(url, items):
     """Save a checklist to the database."""
     db = get_db()
-    db.execute("INSERT INTO checklist (url, items) VALUES (?, ?)", 
-              (url, json.dumps(items)))
-    db.commit()
-    db.close()
+    try:
+        db.execute("INSERT INTO checklist (url, items) VALUES (?, ?)", 
+                  (url, json.dumps(items)))
+        db.commit()
+    except Exception as e:
+        print(f"Error saving to database: {str(e)}")
+    finally:
+        db.close()
 
 def list_to_items(input_str):
     pattern = r'(\w+)\s+x\s+(\d+)(\w*)'
@@ -96,14 +101,15 @@ def index():
 @app.route("/checklist/<checklist_url>")
 def view_checklist(checklist_url):
     db = get_db()
-    row = db.execute("SELECT items FROM checklist WHERE url = ?", (checklist_url,)).fetchone()
-    db.close()
-
-    if not row:
-        return "Checklist not found", 404
-
-    items = json.loads(row[0])
-    return render_template("checklist.html", items=items)
+    try:
+        row = db.execute("SELECT items FROM checklist WHERE url = ?", (checklist_url,)).fetchone()
+        if not row:
+            return "Checklist not found", 404
+        
+        items = json.loads(row[0])
+        return render_template("checklist.html", items=items)
+    finally:
+        db.close()
 
 
 if __name__ == "__main__":
