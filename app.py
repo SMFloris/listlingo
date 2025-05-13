@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+import sqlite3
 import requests
 import re
 import time
@@ -12,6 +13,20 @@ OLLAMA_URL = "http://100.112.153.1:11434/api/chat"
 # Default model to use
 DEFAULT_MODEL = "qwen3:30b-a3b"
 
+
+def get_db():
+    """Connect to the SQLite database."""
+    conn = sqlite3.connect('checklists.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def save_checklist(url, items):
+    """Save a checklist to the database."""
+    db = get_db()
+    db.execute("INSERT INTO checklist (url, items) VALUES (?, ?)", 
+              (url, json.dumps(items)))
+    db.commit()
+    db.close()
 
 def list_to_items(input_str):
     pattern = r'(\w+)\s+x\s+(\d+)(\w*)'
