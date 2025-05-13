@@ -76,22 +76,16 @@ def index():
     return render_template("index.html", response=response)
 
 
-@app.route("/checklist")
-def checklist():
-    db = get_db()
-    items = db.execute('SELECT * FROM items ORDER BY item').fetchall()
-    return render_template("checklist.html", items=items)
-
-
 @app.route("/checklist/<checklist_url>")
 def view_checklist(checklist_url):
     db = get_db()
-    row = db.execute("SELECT items FROM checklist WHERE url = ?", (checklist_url,)).fetchone()
+    row = db.execute("SELECT items FROM checklist WHERE url = ?",
+                     (checklist_url,)).fetchone()
     db.close()
-    
+
     if not row:
         return "Checklist not found", 404
-    
+
     items = json.loads(row[0])
     return render_template("checklist.html", items=items)
 
