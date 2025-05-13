@@ -19,6 +19,14 @@ def get_db():
     """Connect to the SQLite database."""
     conn = sqlite3.connect('checklists.db')
     conn.row_factory = sqlite3.Row
+    # Create table if not exists
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS checklist (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            url TEXT UNIQUE,
+            items TEXT
+        )
+    ''')
     return conn
 
 
