@@ -1,39 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Shopping Checklist</title>
-    <script>
-        function saveChecklist() {
-            // Create a form data object
-            const formData = new FormData();
-            
-            // Get all checkboxes
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            
-            // Add each checkbox state to the form data
-            checkboxes.forEach((checkbox, index) => {
-                formData.append(`item_${index+1}`, checkbox.checked ? 'on' : '');
-            });
-            
-            // Send an AJAX request to save the changes
-            fetch(window.location.pathname, {
-                method: 'POST',
-                body: formData
-            });
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Checklist</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      background: #fafafa;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    li:hover {
+      background: #f0f0f0;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 15px;
+      transform: scale(1.2);
+    }
+
+    .item-text {
+      flex: 1;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .item-text span {
+      font-weight: bold;
+    }
+
+    .item-text small {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+  <script>
+    function saveChecklist() {
+      const formData = new FormData();
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox, index) => {
+        formData.append(`item_${index + 1}`, checkbox.checked ? 'on' : '');
+      });
+      fetch(window.location.pathname, {
+        method: 'POST',
+        body: formData
+      });
+    }
+  </script>
 </head>
 <body>
-    <h1>Shopping Checklist</h1>
+  <div class="container">
+    <h1>🛒 Shopping Checklist</h1>
     <ul>
-        {% for item in items %}
-            <li>
-                <input type="checkbox" name="item_{{ loop.index }}" 
-                       {% if item.checked %}checked{% endif %}
-                       onclick="saveChecklist()">
-                {{ item.item }} - {{ item.quantity }} {{ item.measurement }}
-            </li>
-        {% endfor %}
+      {% for item in items %}
+        <li>
+          <input type="checkbox" name="item_{{ loop.index }}" 
+                 {% if item.checked %}checked{% endif %}
+                 onclick="saveChecklist()">
+          <span class="item-text">
+            <span>{{ item.item }}</span>
+            <small> x {{ item.quantity }} {{ item.measurement }}</small>
+          </span>
+        </li>
+      {% endfor %}
     </ul>
+  </div>
 </body>
 </html>
