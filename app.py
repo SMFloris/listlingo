@@ -81,8 +81,7 @@ def index():
 @app.route("/checklist/<checklist_url>")
 def view_checklist(checklist_url):
     db = get_db()
-    row = db.execute("SELECT items FROM checklist WHERE url = ?",
-                     (checklist_url,)).fetchone()
+    row = db.execute("SELECT items FROM checklist WHERE url = ?", (checklist_url,)).fetchone()
     db.close()
 
     if not row:
