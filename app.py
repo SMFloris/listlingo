@@ -76,5 +76,11 @@ def index():
     return render_template("index.html", response=response)
 
 
+@app.route("/checklist")
+def checklist():
+    db = get_db()
+    items = db.execute('SELECT * FROM items ORDER BY item').fetchall()
+    return render_template("checklist.html", items=items)
+
 if __name__ == "__main__":
     app.run(debug=True, port="3030")
