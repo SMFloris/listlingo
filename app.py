@@ -82,5 +82,6 @@ def checklist():
     items = db.execute('SELECT * FROM items ORDER BY item').fetchall()
     return render_template("checklist.html", items=items)
 
+
 if __name__ == "__main__":
     app.run(debug=True, port="3030")
