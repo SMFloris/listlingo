@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 import requests
 import re
+import time
 import json
 
 app = Flask(__name__)
@@ -69,8 +70,9 @@ def index():
                 response = response['message']['content'].lstrip(
                     "<think>\n\n</think>\n\n")
                 items = list_to_items(response)
-                # response = response_data.get(
-                #     "response", "No response from Ollama.")
+                # Save to database
+                url = "checklist_" + str(int(time.time()))  # Generate a unique URL
+                save_checklist(url, items)
             except Exception as e:
                 response = f"Error communicating with Ollama: {str(e)}"
     return render_template("index.html", response=response)
