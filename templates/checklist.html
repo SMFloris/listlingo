@@ -5,15 +5,16 @@
 </head>
 <body>
     <h1>Shopping Checklist</h1>
-    <ul>
-        {% for item in items %}
-            <li>
-                <form method="POST">
+    <form method="POST">
+        <ul>
+            {% for item in items %}
+                <li>
                     <input type="checkbox" name="item_{{ loop.index }}" {% if item.checked %}checked{% endif %}>
                     {{ item.item }} - {{ item.quantity }} {{ item.measurement }}
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Save Changes</button>
+    </form>
 </body>
 </html>

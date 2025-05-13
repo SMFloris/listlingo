@@ -126,6 +126,7 @@ def view_checklist(checklist_url):
         if request.method == "POST":
             updated_items = []
             for i, item in enumerate(items):
+                # Check if this item was checked
                 checked = request.form.get(f"item_{i+1}") == 'on'
                 updated_items.append({
                     "item": item["item"],
