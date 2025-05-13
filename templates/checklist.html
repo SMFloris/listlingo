@@ -7,7 +7,12 @@
     <h1>Shopping Checklist</h1>
     <ul>
         {% for item in items %}
-            <li>{{ item.item }} - {{ item.quantity }} {{ item.measurement }}</li>
+            <li>
+                <form method="POST">
+                    <input type="checkbox" name="item_{{ loop.index }}" {% if item.checked %}checked{% endif %}>
+                    {{ item.item }} - {{ item.quantity }} {{ item.measurement }}
+                </form>
+            </li>
         {% endfor %}
     </ul>
 </body>

@@ -111,7 +111,7 @@ def index():
     return render_template("index.html", response=response)
 
 
-@app.route("/checklist/<checklist_url>")
+@app.route("/checklist/<checklist_url>", methods=["GET", "POST"])
 def view_checklist(checklist_url):
     db = get_db()
     try:
@@ -121,6 +121,24 @@ def view_checklist(checklist_url):
             return "Checklist not found", 404
 
         items = json.loads(row[0])
+        
+        # Handle checkbox updates
+        if request.method == "POST":
+            updated_items = []
+            for i, item in enumerate(items):
+                checked = request.form.get(f"item_{i+1}") == 'on'
+                updated_items.append({
+                    "item": item["item"],
+                    "quantity": item["quantity"],
+                    "measurement": item["measurement"],
+                    "checked": checked
+                })
+            # Update the database with the new check status
+            db.execute("UPDATE checklist SET items = ? WHERE url = ?", 
+                      (json.dumps(updated_items), checklist_url))
+            db.commit()
+            items = updated_items
+
         return render_template("checklist.html", items=items)
     finally:
         db.close()
