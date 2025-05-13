@@ -96,6 +96,8 @@ def index():
                 # Generate a unique URL
                 url = "checklist_" + str(int(time.time()))
                 save_checklist(url, items)
+                # Redirect to the checklist view
+                return redirect(url_for('view_checklist', checklist_url=url))
             except Exception as e:
                 response = f"Error communicating with Ollama: {str(e)}"
     return render_template("index.html", response=response)
