@@ -2,19 +2,38 @@
 <html>
 <head>
     <title>Shopping Checklist</title>
+    <script>
+        function saveChecklist() {
+            // Create a form data object
+            const formData = new FormData();
+            
+            // Get all checkboxes
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            // Add each checkbox state to the form data
+            checkboxes.forEach((checkbox, index) => {
+                formData.append(`item_${index+1}`, checkbox.checked ? 'on' : '');
+            });
+            
+            // Send an AJAX request to save the changes
+            fetch(window.location.pathname, {
+                method: 'POST',
+                body: formData
+            });
+        }
+    </script>
 </head>
 <body>
     <h1>Shopping Checklist</h1>
-    <form method="POST">
-        <ul>
-            {% for item in items %}
-                <li>
-                    <input type="checkbox" name="item_{{ loop.index }}" {% if item.checked %}checked{% endif %}>
-                    {{ item.item }} - {{ item.quantity }} {{ item.measurement }}
-                </li>
-            {% endfor %}
-        </ul>
-        <button type="submit">Save Changes</button>
-    </form>
+    <ul>
+        {% for item in items %}
+            <li>
+                <input type="checkbox" name="item_{{ loop.index }}" 
+                       {% if item.checked %}checked{% endif %}
+                       onclick="saveChecklist()">
+                {{ item.item }} - {{ item.quantity }} {{ item.measurement }}
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
