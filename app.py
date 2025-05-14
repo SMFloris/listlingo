@@ -23,7 +23,9 @@ def get_db():
     conn.execute('''
         CREATE TABLE IF NOT EXISTS checklist (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            url TEXT UNIQUE
+            url TEXT UNIQUE,
+            name TEXT,
+            summary TEXT
         )
     ''')
     conn.execute('''
@@ -40,10 +42,17 @@ def get_db():
     return conn
 
 
-def save_checklist(url, items):
+def save_checklist(url, items, name, summary):
     """Save a checklist to the database with individual items."""
     db = get_db()
     try:
+        # Insert into checklist table
+        db.execute(
+            "INSERT INTO checklist (url, name, summary) VALUES (?, ?, ?)",
+            (url, name, summary)
+        )
+        
+        # Insert items into checklist_items table
         for item in items:
             db.execute(
                 "INSERT INTO checklist_items (checklist_url, item, quantity, measurement) VALUES (?, ?, ?, ?)",
@@ -215,6 +224,10 @@ if __name__ == "__main__":
     app.run(debug=True, port="3030")
 def generate_name_and_summary(response):
     # Generate a funny name (movie or food themed) with the current date
+    # Example: "The Fast and the Furious: Shopping Edition 2023-04-05"
+    # Example: "Big Mac Shopping List 2023-04-05"
+    
+    # Simple implementation for now
     name = f"Shopping List {time.strftime('%Y-%m-%d')}"
     
     # Create a short summary of the checklist
