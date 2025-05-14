@@ -164,7 +164,7 @@ def index():
                 # Save to database
                 # Generate a unique URL
                 url = "checklist_" + str(int(time.time()))
-                save_checklist(url, items)
+                save_checklist(url, items, name, summary)
                 # Set cookie and redirect
                 resp = redirect(url_for('view_checklist', checklist_url=url))
                 resp.set_cookie('last_checklist', url, max_age=86400, path='/')
