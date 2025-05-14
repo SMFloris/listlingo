@@ -84,7 +84,7 @@ def index():
                                 Another example: `un bax de sprite, doua kilograme de ceapa, doua cola, 2 litrii de lapte` transform into: `ceapa x 2kg, cola x 2, sprite x 1bax, lapte x 2l`.
                                 Another example: `trei sticle la doi litrii de cola si doua kilograme de castraveti` transform into: `cola (2l) x 3, castraveti x 2kg`.
                                 Only output the final list.
-                                /no-think"
+                                /think"
                             """
                         },
                         {
@@ -96,10 +96,10 @@ def index():
                 response_data = requests.post(
                     OLLAMA_URL, json=payload, stream=False)
                 response = response_data.json()
-                print(response)
                 response = response['message']['content'].lstrip(
                     "<think>\n\n</think>\n\n")
                 items = list_to_items(response)
+                print("caca", items)
                 # Save to database
                 # Generate a unique URL
                 url = "checklist_" + str(int(time.time()))
@@ -121,7 +121,7 @@ def view_checklist(checklist_url):
             return "Checklist not found", 404
 
         items = json.loads(row[0])
-        
+
         # Handle checkbox updates
         if request.method == "POST":
             updated_items = []
@@ -135,8 +135,8 @@ def view_checklist(checklist_url):
                     "checked": checked
                 })
             # Update the database with the new check status
-            db.execute("UPDATE checklist SET items = ? WHERE url = ?", 
-                      (json.dumps(updated_items), checklist_url))
+            db.execute("UPDATE checklist SET items = ? WHERE url = ?",
+                       (json.dumps(updated_items), checklist_url))
             db.commit()
             items = updated_items
 
