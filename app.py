@@ -170,6 +170,9 @@ def index():
                 print("og", response)
                 items = list_to_items(response)
                 print("caca", items)
+                # Generate name and summary
+                name, summary = generate_name_and_summary(response)
+                
                 # Save to database
                 # Generate a unique URL
                 url = "checklist_" + str(int(time.time()))
