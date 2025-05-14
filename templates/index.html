@@ -5,124 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ollama Shopping List Generator</title>
   <style>
+    :root {
+      --primary-color: #007BFF;
+      --secondary-color: #FFA500;
+      --background-color: #f4f4f4;
+      --container-bg: #fff;
+      --border-radius: 10px;
+      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: var(--font-family);
+      background-color: var(--background-color);
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
       color: #333;
-    }
-
-    header {
-      background: #2c3e50;
-      color: white;
-      padding: 2rem 1rem;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
     }
 
     .container {
       max-width: 800px;
-      margin: 2rem auto;
-      padding: 1rem;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin: 40px auto;
+      background: var(--container-bg);
+      padding: 30px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-      padding: 1rem;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-
-    textarea:focus {
-      border-color: #007BFF;
-      outline: none;
-    }
-
-    input[type="submit"] {
-      padding: 1rem;
-      background-color: #28a745;
-      color: white;
+    button {
+      padding: 10px 20px;
       border: none;
-      border-radius: 8px;
-      font-size: 1rem;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    input[type="submit"]:hover {
-      background-color: #218838;
-    }
-
-    #response {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background-color: #f8f9fa;
-      border-radius: 8px;
-      white-space: pre-wrap;
       font-size: 1rem;
-      line-height: 1.6;
+      font-family: inherit;
+      transition: background 0.3s ease;
     }
 
-    .loading {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
     }
 
-    .spinner {
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid #007BFF;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin-bottom: 1rem;
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: white;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
     }
 
-    .loading-message {
-      font-size: 1.2rem;
-      color: #555;
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-
-      textarea {
-        font-size: 0.95rem;
-      }
-
-      input[type="submit"] {
-        font-size: 0.95rem;
-      }
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus {
+      border-color: var(--primary-color);
+      outline: none;
     }
   </style>
 </head>
@@ -133,9 +82,9 @@
   </header>
 
   <div class="container">
-    <form id="inputForm" method="POST">
+    <form id="inputForm" method="POST" class="container">
       <textarea name="input_text" placeholder="Type your list here... (e.g., '2kg of apples, 3 bottles of water, etc.')"></textarea>
-      <input type="submit" value="Generate Shopping List" />
+      <input type="submit" value="Generate Shopping List" class="btn-primary" />
     </form>
 
     <div class="loading" id="loading">
