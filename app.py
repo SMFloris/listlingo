@@ -56,20 +56,26 @@ def save_checklist(url, items):
 
 
 def list_to_items(input_str):
-    pattern = r'(.*?)\s+x\s+(\d+)(\w*)'
+    # Split the input string by commas to get individual items
+    items = [item.strip() for item in input_str.split(',')]
 
+    pattern = r'(.*?)\s+x\s+(\d+)(\w*)'
     result = []
-    for match in re.finditer(pattern, input_str):
-        item = match.group(1).strip()
-        quantity = match.group(2)
-        measurement = match.group(3)
-        if not measurement:
-            measurement = "buc"
-        result.append({
-            "item": item,
-            "quantity": quantity,
-            "measurement": measurement
-        })
+
+    for item in items:
+        match = re.search(pattern, item)
+        if match:
+            item_name = match.group(1).strip()
+            quantity = match.group(2)
+            measurement = match.group(3)
+            if not measurement:
+                measurement = "buc"
+            result.append({
+                "item": item_name,
+                "quantity": quantity,
+                "measurement": measurement
+            })
+
     return result
 
 
