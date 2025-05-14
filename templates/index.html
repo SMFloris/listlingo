@@ -165,15 +165,24 @@
       "Making it perfect... 🌟"
     ];
     let messageIndex = 0;
+    let intervalId = null;
 
     document.getElementById('inputForm').addEventListener('submit', function () {
       loadingDiv.style.display = 'flex';
+      messageIndex = 0;
       loadingMessage.textContent = messages[messageIndex];
-      messageIndex = (messageIndex + 1) % messages.length;
+      intervalId = setInterval(() => {
+        messageIndex = (messageIndex + 1) % messages.length;
+        loadingMessage.textContent = messages[messageIndex];
+      }, 1000);
     });
 
-    // Optional: reset spinner on page load
+    // Clear interval on page load (e.g., after redirect)
     window.addEventListener('load', () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
       loadingDiv.style.display = 'none';
     });
   </script>
