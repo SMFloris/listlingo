@@ -104,6 +104,21 @@
     accent-color: var(--primary-color);
   }
 </style>
+
+#toaster {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: none;
+  z-index: 1000;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
   <script>
     function saveChecklist() {
       const formData = new FormData();
@@ -198,5 +213,6 @@
       </button>
     </div>
   </div>
+  <div id="toaster">Link copied to clipboard!</div>
 </body>
 </html>
