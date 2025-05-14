@@ -233,6 +233,12 @@ def index():
 def view_checklist(checklist_url):
     db = get_db()
     try:
+        # Fetch checklist information
+        checklist = db.execute(
+            "SELECT name, summary FROM checklist WHERE url = ?",
+            (checklist_url,)
+        ).fetchone()
+        
         # Fetch items from the new table
         items = db.execute(
             "SELECT id, item, quantity, measurement, checked FROM checklist_items WHERE checklist_url = ?",
@@ -261,7 +267,7 @@ def view_checklist(checklist_url):
                 )
             db.commit()
 
-        return render_template("checklist.html", items=items)
+        return render_template("checklist.html", items=items, checklist=checklist)
     finally:
         db.close()
 

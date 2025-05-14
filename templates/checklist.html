@@ -185,6 +185,10 @@
 <body>
   <div class="container">
     <h1>🛒 Shopping Checklist</h1>
+    <div class="checklist-info">
+      <h2>{{ checklist.name }}</h2>
+      <p>{{ checklist.summary }}</p>
+    </div>
     <form action="/" method="POST">
       <ul>
         {% for item in items %}
