@@ -6,35 +6,41 @@
   <title>Shopping Checklist</title>
   <style>
     :root {
-      --primary-color: #007BFF;
-      --secondary-color: #FFA500;
-      --background-color: #f4f4f4;
-      --container-bg: #fff;
-      --border-radius: 10px;
-      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --primary-color: #4F46E5;
+      --secondary-color: #10B981;
+      --background-color: #F9FAFB;
+      --card-bg: #FFFFFF;
+      --text-color: #1F2937;
+      --border-radius: 12px;
+      --font-family: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
       font-family: var(--font-family);
       background-color: var(--background-color);
-      margin: 0;
-      padding: 0;
-      color: #333;
+      color: var(--text-color);
+      line-height: 1.6;
     }
 
     .container {
       max-width: 800px;
-      margin: 40px auto;
-      background: var(--container-bg);
-      padding: 30px;
+      margin: 60px auto;
+      padding: 40px;
+      background: var(--card-bg);
       border-radius: var(--border-radius);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
 
     button {
       padding: 10px 20px;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: 1rem;
       font-family: inherit;
@@ -59,12 +65,13 @@
     input[type="text"],
     input[type="number"],
     textarea {
-      padding: 10px;
-      border: 2px solid #ddd;
-      border-radius: 5px;
+      padding: 15px 20px;
+      border: 2px solid #E5E7EB;
+      border-radius: 10px;
       font-size: 1rem;
       width: 100%;
       box-sizing: border-box;
+      transition: border-color 0.3s ease;
     }
 
     input[type="text"]:focus,
@@ -74,150 +81,58 @@
       outline: none;
     }
 
-  ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-  }
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
 
-  input[type="checkbox"]:checked ~ .item-text {
-    text-decoration: line-through;
-  }
+    input[type="checkbox"]:checked ~ .item-text {
+      text-decoration: line-through;
+    }
 
-  .item-text small {
-    color: #888;
-    font-size: 1.1rem;
-    margin-left: 5px;
-  }
+    .item-text small {
+      color: #888;
+      font-size: 1.1rem;
+      margin-left: 5px;
+    }
 
-  label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    width: 100%;
-    padding: 8px 0;
-  }
+    label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      width: 100%;
+      padding: 8px 0;
+    }
 
-  input[type="checkbox"] {
-    transform: scale(1.5);
-    margin-right: 10px;
-    accent-color: var(--primary-color);
-  }
-<style>
-  :root {
-    --primary-color: #007BFF;
-    --secondary-color: #FFA500;
-    --background-color: #f4f4f4;
-    --container-bg: #fff;
-    --border-radius: 10px;
-    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+    input[type="checkbox"] {
+      transform: scale(1.5);
+      margin-right: 10px;
+      accent-color: var(--primary-color);
+    }
 
-  body {
-    font-family: var(--font-family);
-    background-color: var(--background-color);
-    margin: 0;
-    padding: 0;
-    color: #333;
-  }
+    #toaster {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: none;
+      z-index: 1000;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
 
-  .container {
-    max-width: 800px;
-    margin: 40px auto;
-    background: var(--container-bg);
-    padding: 30px;
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: background 0.3s ease;
-  }
-
-  .btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-  }
-
-  .btn-secondary {
-    background-color: var(--secondary-color);
-    color: white;
-  }
-
-  .btn-danger {
-    background-color: #dc3545;
-    color: white;
-  }
-
-  input[type="text"],
-  input[type="number"],
-  textarea {
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  input[type="text"]:focus,
-  input[type="number"]:focus,
-  textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-  }
-
-  ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-  }
-
-  input[type="checkbox"]:checked ~ .item-text {
-    text-decoration: line-through;
-  }
-
-  .item-text small {
-    color: #888;
-    font-size: 1.1rem;
-    margin-left: 5px;
-  }
-
-  label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    width: 100%;
-    padding: 8px 0;
-  }
-
-  input[type="checkbox"] {
-    transform: scale(1.5);
-    margin-right: 10px;
-    accent-color: var(--primary-color);
-  }
-
-  #toaster {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    display: none;
-    z-index: 1000;
-    font-size: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-</style>
+    @media (max-width: 600px) {
+      .container {
+        margin: 40px 20px;
+        padding: 30px;
+      }
+    }
+  </style>
   <script>
     function saveChecklist() {
       const formData = new FormData();
