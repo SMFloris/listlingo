@@ -122,12 +122,24 @@
       <button onclick="shareList()" style="padding: 10px 20px; background: #FFA500; color: white; border: none; border-radius: 5px; cursor: pointer; flex: 1;">
         Share 📱
       </button>
-      <form action="/" method="POST" style="flex: 1;">
-        <input type="hidden" name="reset_cookie" value="1">
-        <button type="submit" style="width: 100%; padding: 10px 20px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
-          New List
-        </button>
-      </form>
+      <button onclick="document.getElementById('confirmModal').style.display='flex'" style="flex: 1; padding: 10px 20px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        New List
+      </button>
+    </div>
+
+    <div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+      <div style="background: white; padding: 25px; border-radius: 10px; text-align: center; max-width: 300px;">
+        <h3>Are you sure?</h3>
+        <p>This will clear your current checklist.</p>
+        <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
+          <button onclick="document.getElementById('confirmModal').style.display='none'" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Cancel
+          </button>
+          <button onclick="document.querySelector('form').submit()" style="padding: 8px 16px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Yes, New List
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </body>
