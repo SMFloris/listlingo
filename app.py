@@ -19,23 +19,35 @@ def get_db():
     """Connect to the SQLite database."""
     conn = sqlite3.connect('checklists.db')
     conn.row_factory = sqlite3.Row
-    # Create table if not exists
+    # Create tables if not exists
     conn.execute('''
         CREATE TABLE IF NOT EXISTS checklist (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            url TEXT UNIQUE,
-            items TEXT
+            url TEXT UNIQUE
+        )
+    ''')
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS checklist_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            checklist_url TEXT NOT NULL,
+            item TEXT NOT NULL,
+            quantity TEXT NOT NULL,
+            measurement TEXT NOT NULL,
+            FOREIGN KEY(checklist_url) REFERENCES checklist(url)
         )
     ''')
     return conn
 
 
 def save_checklist(url, items):
-    """Save a checklist to the database."""
+    """Save a checklist to the database with individual items."""
     db = get_db()
     try:
-        db.execute("INSERT INTO checklist (url, items) VALUES (?, ?)",
-                   (url, json.dumps(items)))
+        for item in items:
+            db.execute(
+                "INSERT INTO checklist_items (checklist_url, item, quantity, measurement) VALUES (?, ?, ?, ?)",
+                (url, item['item'], item['quantity'], item['measurement'])
+            )
         db.commit()
     except Exception as e:
         print(f"Error saving to database: {str(e)}")
@@ -115,12 +127,13 @@ def index():
 def view_checklist(checklist_url):
     db = get_db()
     try:
-        row = db.execute(
-            "SELECT items FROM checklist WHERE url = ?", (checklist_url,)).fetchone()
-        if not row:
-            return "Checklist not found", 404
-
-        items = json.loads(row[0])
+        # Fetch items from the new table
+        items = db.execute(
+            "SELECT item, quantity, measurement FROM checklist_items WHERE checklist_url = ?",
+            (checklist_url,)
+        ).fetchall()
+        # Convert to list of dictionaries for template compatibility
+        items = [{"item": row[0], "quantity": row[1], "measurement": row[2]} for row in items]
 
         # Handle checkbox updates
         if request.method == "POST":
