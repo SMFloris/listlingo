@@ -100,14 +100,12 @@ def index():
                                    - Omit "x" if quantity is 1 (e.g., "apple", "milk")
                                    - Use standard abbreviations: 
                                      - kg = kilograms
+                                     - g = grams
                                      - l = liters
-                                     - pc = pieces
-                                     - bax = box
-                                     - bot = bottle
                                    - For complex quantities: 
                                      - "2 liters of milk" → "milk x 2l"
-                                     - "a box of cereal" → "cereal x 1bax"
-                                     - "three 2-liter bottles of soda" → "soda x 3bot (2l)"
+                                     - "a box of cereal" → "cereal x 1"
+                                     - "three 2-liter bottles of soda" → "soda (2l) x 3"
 
                                 3. **Examples**
                                    - Input: "ceapa cola castraveti hartie igienica pizza apa"
@@ -119,7 +117,7 @@ def index():
                                    - Input: "trei sticle la doi litrii de cola si doua kilograme de castraveti"
                                      → Output: "cola (2l) x 3, castraveti x 2kg"
                                    - Input: "5kg of apples, 3 bottles of water, 2kg of potatoes"
-                                     → Output: "apples x 5kg, potatoes x 2kg, water x 3bot"
+                                     → Output: "apples x 5kg, potatoes x 2kg, water x 3"
 
                                 4. **Do Not Include**
                                    - Any explanations or extra text
@@ -142,6 +140,7 @@ def index():
                 response = response_data.json()
                 response = response['message']['content'].lstrip(
                     "<think>\n\n</think>\n\n")
+                print("og", response)
                 items = list_to_items(response)
                 print("caca", items)
                 # Save to database
@@ -165,7 +164,8 @@ def view_checklist(checklist_url):
             (checklist_url,)
         ).fetchall()
         # Convert to list of dictionaries for template compatibility
-        items = [{"item": row[0], "quantity": row[1], "measurement": row[2]} for row in items]
+        items = [{"item": row[0], "quantity": row[1],
+                  "measurement": row[2]} for row in items]
 
         # Handle checkbox updates
         if request.method == "POST":
