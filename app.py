@@ -96,6 +96,49 @@ def list_to_items(input_str):
     return result
 
 
+def get_name_prompt(response):
+    return f"""
+    You are a creative assistant that generates funny, movie or food-themed names for shopping lists.
+    The name should be in English, include an emoji, and be humorous.
+    Generate a funny name for this shopping list:
+    "{response}" /no-think
+    """
+
+
+def get_summary_prompt(response):
+    return f"""
+    You are a stand-up comedian that creates punchlines or jokes about shopping lists.
+    Create a funny movie-style punchline about this shopping list: "{response}"
+    Just give me the punchline, no extra text. /no-think
+    """
+
+
+def generate_name_and_summary(response):
+    """Generate a funny name and summary using Ollama"""
+    # Generate name
+    name_prompt = get_name_prompt(response)
+    name_payload = {
+        "model": DEFAULT_MODEL,
+        "stream": False,
+        "prompt": name_prompt
+    }
+    name_response = requests.post(OLLAMA_URL, json=name_payload, stream=False)
+    name = name_response.json()['response'].strip()
+
+    # Generate summary
+    summary_prompt = get_summary_prompt(response)
+    summary_payload = {
+        "model": DEFAULT_MODEL,
+        "stream": False,
+        "prompt": summary_prompt
+    }
+    summary_response = requests.post(
+        OLLAMA_URL, json=summary_payload, stream=False)
+    summary = summary_response.json()['response'].strip()
+
+    return name, summary
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     # Check for cookie on GET request
@@ -225,45 +268,3 @@ def view_checklist(checklist_url):
 
 if __name__ == "__main__":
     app.run(debug=True, port="3030")
-
-
-def get_name_prompt(response):
-    return f"""
-    You are a creative assistant that generates funny, movie or food-themed names for shopping lists. 
-    The name should be in English, include an emoji, and be humorous. 
-    Here's the shopping list content: "{response}"
-    
-    Generate a funny name for this shopping list:
-    """
-
-def get_summary_prompt(response):
-    return f"""
-    You are a stand-up comedian that creates punchlines or jokes about shopping lists. 
-    Create a funny movie-style punchline about this shopping list: "{response}"
-    
-    Just give me the punchline, no extra text:
-    """
-
-def generate_name_and_summary(response):
-    """Generate a funny name and summary using Ollama"""
-    # Generate name
-    name_prompt = get_name_prompt(response)
-    name_payload = {
-        "model": DEFAULT_MODEL,
-        "stream": False,
-        "prompt": name_prompt
-    }
-    name_response = requests.post(OLLAMA_URL, json=name_payload, stream=False)
-    name = name_response.json()['response'].strip()
-    
-    # Generate summary
-    summary_prompt = get_summary_prompt(response)
-    summary_payload = {
-        "model": DEFAULT_MODEL,
-        "stream": False,
-        "prompt": summary_prompt
-    }
-    summary_response = requests.post(OLLAMA_URL, json=summary_payload, stream=False)
-    summary = summary_response.json()['response'].strip()
-    
-    return name, summary
