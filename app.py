@@ -88,6 +88,12 @@ def list_to_items(input_str):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    # Check for cookie on GET request
+    if request.method == "GET":
+        last_checklist = request.cookies.get('last_checklist')
+        if last_checklist:
+            return redirect(url_for('view_checklist', checklist_url=last_checklist))
+
     response = None
     if request.method == "POST":
         user_input = request.form.get("input_text", "")
@@ -161,8 +167,10 @@ def index():
                 # Generate a unique URL
                 url = "checklist_" + str(int(time.time()))
                 save_checklist(url, items)
-                # Redirect to the checklist view
-                return redirect(url_for('view_checklist', checklist_url=url))
+                # Set cookie and redirect
+                resp = redirect(url_for('view_checklist', checklist_url=url))
+                resp.set_cookie('last_checklist', url, max_age=86400, path='/')
+                return resp
             except Exception as e:
                 response = f"Error communicating with Ollama: {str(e)}"
     return render_template("index.html", response=response)
