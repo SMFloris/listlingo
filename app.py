@@ -56,11 +56,11 @@ def save_checklist(url, items):
 
 
 def list_to_items(input_str):
-    pattern = r'(\w+)\s+x\s+(\d+)(\w*)'
+    pattern = r'(.*?)\s+x\s+(\d+)(\w*)'
 
     result = []
     for match in re.finditer(pattern, input_str):
-        item = match.group(1)
+        item = match.group(1).strip()
         quantity = match.group(2)
         measurement = match.group(3)
         if not measurement:
