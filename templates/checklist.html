@@ -264,21 +264,23 @@
 <body>
   <div class="container">
     <h1>🛒 Shopping Checklist</h1>
-    <ul>
-      {% for item in items %}
-        <li>
-          <label>
-            <input type="checkbox" id="{{ item.id }}" name="item_{{ item.id }}" 
-                   {% if item.checked %}checked{% endif %}
-                   onclick="saveChecklist()">
-            <span class="item-text">
-              <span>{{ item.item }}</span>
-              <small> x {{ item.quantity }} {{ item.measurement }}</small>
-            </span>
-          </label>
-        </li>
-      {% endfor %}
-    </ul>
+    <form action="/" method="POST">
+      <ul>
+        {% for item in items %}
+          <li>
+            <label>
+              <input type="checkbox" id="{{ item.id }}" name="item_{{ item.id }}" 
+                     {% if item.checked %}checked{% endif %}
+                     onclick="saveChecklist()">
+              <span class="item-text">
+                <span>{{ item.item }}</span>
+                <small> x {{ item.quantity }} {{ item.measurement }}</small>
+              </span>
+            </label>
+          </li>
+        {% endfor %}
+      </ul>
+    </form>
 
     <!-- Share List Button -->
     <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
