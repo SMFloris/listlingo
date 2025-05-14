@@ -85,6 +85,20 @@
     font-size: 1.1rem;
     margin-left: 5px;
   }
+
+  label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    padding: 8px 0;
+  }
+
+  input[type="checkbox"] {
+    transform: scale(1.5);
+    margin-right: 10px;
+    accent-color: var(--primary-color);
+  }
 </style>
   <script>
     function saveChecklist() {
@@ -126,13 +140,15 @@
     <ul>
       {% for item in items %}
         <li>
-          <input type="checkbox" id="{{ item.id }}" name="item_{{ item.id }}" 
-                 {% if item.checked %}checked{% endif %}
-                 onclick="saveChecklist()">
-          <span class="item-text">
-            <span>{{ item.item }}</span>
-            <small> x {{ item.quantity }} {{ item.measurement }}</small>
-          </span>
+          <label>
+            <input type="checkbox" id="{{ item.id }}" name="item_{{ item.id }}" 
+                   {% if item.checked %}checked{% endif %}
+                   onclick="saveChecklist()">
+            <span class="item-text">
+              <span>{{ item.item }}</span>
+              <small> x {{ item.quantity }} {{ item.measurement }}</small>
+            </span>
+          </label>
         </li>
       {% endfor %}
     </ul>
