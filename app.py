@@ -194,8 +194,16 @@ def view_checklist(checklist_url):
             (checklist_url,)
         ).fetchall()
         # Convert to list of dictionaries for template compatibility
-        items = [{"item": row[0], "quantity": row[1],
-                  "measurement": row[2]} for row in items]
+        items = [
+            {
+                "id": row[0],
+                "item": row[1],
+                "quantity": row[2],
+                "measurement": row[3],
+                "checked": row[4]
+            }
+            for row in items
+        ]
 
         # Handle checkbox updates
         if request.method == "POST":
