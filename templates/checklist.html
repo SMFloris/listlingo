@@ -136,6 +136,9 @@
       navigator.clipboard.writeText(window.location.href)
         .then(() => {
           document.getElementById('toaster').style.display = 'flex';
+          setTimeout(() => {
+            document.getElementById('toaster').style.display = 'none';
+          }, 3000);
         })
         .catch(err => {
           console.error('Failed to copy: ', err);
