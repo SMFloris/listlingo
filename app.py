@@ -51,7 +51,7 @@ def save_checklist(url, items, name, summary):
             "INSERT INTO checklist (url, name, summary) VALUES (?, ?, ?)",
             (url, name, summary)
         )
-        
+
         # Insert items into checklist_items table
         for item in items:
             db.execute(
@@ -172,7 +172,7 @@ def index():
                 print("caca", items)
                 # Generate name and summary
                 name, summary = generate_name_and_summary(response)
-                
+
                 # Save to database
                 # Generate a unique URL
                 url = "checklist_" + str(int(time.time()))
@@ -225,16 +225,18 @@ def view_checklist(checklist_url):
 
 if __name__ == "__main__":
     app.run(debug=True, port="3030")
+
+
 def generate_name_and_summary(response):
     # Generate a funny name (movie or food themed) with the current date
     # Example: "The Fast and the Furious: Shopping Edition 2023-04-05"
     # Example: "Big Mac Shopping List 2023-04-05"
-    
+
     # Simple implementation for now
     name = f"Shopping List {time.strftime('%Y-%m-%d')}"
-    
+
     # Create a short summary of the checklist
     items = [item['item'] for item in list_to_items(response)]
     summary = ", ".join(items[:5]) + ("..." if len(items) > 5 else "")
-    
+
     return name, summary
