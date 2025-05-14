@@ -137,14 +137,15 @@
 <body>
   <div class="container">
     <header>
-      <h1 style="font-size: 2.2rem; margin-bottom: 15px;">Dictate your shopping list, let the AI organize it!</h1>
-      <p style="font-size: 1.05rem; color: #4B5563;">Simply speak your list and get a clean, organized version in seconds</p>
+      <h1 style="font-size: 2.2rem; margin-bottom: 15px; color: var(--primary-color);">Speak Your List, Let AI Organize It!</h1>
+      <p style="font-size: 1.05rem; color: #1F2937; font-weight: 500;">Just talk, and get a smart, organized list in seconds</p>
     </header>
 
     <form id="inputForm" method="POST">
       <textarea name="input_text" placeholder="Type your list here... (e.g., '2kg of apples, 3 bottles of water, etc.')"></textarea>
       <button type="submit" class="btn-primary">Generate Shopping List</button>
     </form>
+    <p style="text-align: center; color: #4B5563; margin: 20px 0 30px;">No more chaos - transform your thoughts into order</p>
 
     <div class="loading" id="loading">
       <div class="spinner"></div>
