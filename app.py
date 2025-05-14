@@ -138,8 +138,9 @@ def index():
                 response_data = requests.post(
                     OLLAMA_URL, json=payload, stream=False)
                 response = response_data.json()
-                response = response['message']['content'].lstrip(
-                    "<think>\n\n</think>\n\n")
+                response = re.sub(r'^<think>.*?</think>', '',
+                                  response['message']['content'], flags=re.DOTALL).lstrip()
+
                 print("og", response)
                 items = list_to_items(response)
                 print("caca", items)
