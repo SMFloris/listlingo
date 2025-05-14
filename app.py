@@ -33,6 +33,7 @@ def get_db():
             item TEXT NOT NULL,
             quantity TEXT NOT NULL,
             measurement TEXT NOT NULL,
+            checked BOOLEAN NOT NULL DEFAULT 0,
             FOREIGN KEY(checklist_url) REFERENCES checklist(url)
         )
     ''')
@@ -189,7 +190,7 @@ def view_checklist(checklist_url):
     try:
         # Fetch items from the new table
         items = db.execute(
-            "SELECT item, quantity, measurement FROM checklist_items WHERE checklist_url = ?",
+            "SELECT id, item, quantity, measurement, checked FROM checklist_items WHERE checklist_url = ?",
             (checklist_url,)
         ).fetchall()
         # Convert to list of dictionaries for template compatibility
@@ -202,12 +203,13 @@ def view_checklist(checklist_url):
             for i, item in enumerate(items):
                 # Check if this item was checked
                 checked = request.form.get(f"item_{i+1}") == 'on'
-                updated_items.append({
-                    "item": item["item"],
-                    "quantity": item["quantity"],
-                    "measurement": item["measurement"],
-                    "checked": checked
-                })
+                for item in items:
+                    item_id = item['id']
+                    checked = request.form.get(f"item_{item_id}") == 'on'
+                    db.execute(
+                        "UPDATE checklist_items SET checked = ? WHERE id = ?",
+                        (int(checked), item_id)
+                    )
             # Update the database with the new check status
             db.execute("UPDATE checklist SET items = ? WHERE url = ?",
                        (json.dumps(updated_items), checklist_url))

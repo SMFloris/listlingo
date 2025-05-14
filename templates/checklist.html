@@ -70,8 +70,8 @@
     function saveChecklist() {
       const formData = new FormData();
       const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-      checkboxes.forEach((checkbox, index) => {
-        formData.append(`item_${index + 1}`, checkbox.checked ? 'on' : '');
+      checkboxes.forEach((checkbox) => {
+        formData.append(`item_${checkbox.id}`, checkbox.checked ? 'on' : '');
       });
       fetch(window.location.pathname, {
         method: 'POST',
@@ -86,7 +86,7 @@
     <ul>
       {% for item in items %}
         <li>
-          <input type="checkbox" name="item_{{ loop.index }}" 
+          <input type="checkbox" id="{{ item.id }}" name="item_{{ item.id }}" 
                  {% if item.checked %}checked{% endif %}
                  onclick="saveChecklist()">
           <span class="item-text">
