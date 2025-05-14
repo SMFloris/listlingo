@@ -96,6 +96,13 @@ def index():
 
     response = None
     if request.method == "POST":
+        # Check if the reset cookie flag is present
+        if 'reset_cookie' in request.form:
+            # Delete the cookie and redirect to index
+            resp = redirect(url_for('index'))
+            resp.set_cookie('last_checklist', '', max_age=0, path='/')
+            return resp
+
         user_input = request.form.get("input_text", "")
         if user_input:
             try:
