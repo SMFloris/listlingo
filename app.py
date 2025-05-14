@@ -111,10 +111,7 @@ def index():
                 payload = {
                     "model": DEFAULT_MODEL,
                     "stream": False,
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": """
+                    "prompt": """
                                 You are a helpful shopping list assistant. Your task is to transform raw user input into a clean, organized shopping list. Follow these strict rules:
 
                                 1. **Categorization & Sorting**
@@ -153,20 +150,13 @@ def index():
                                    - Non-shopping items (e.g., "please buy")
 
                                 Only output the final list. Do not add any additional text or formatting.
-                                /think"
-                            """
-                        },
-                        {
-                            "role": "user",
-                            "content": "This is the input: `" + user_input + "`"
-                        }
-                    ]
+                            """ + "This is the input you need to transform: `" + user_input + "` /no-think"
                 }
                 response_data = requests.post(
                     OLLAMA_URL, json=payload, stream=False)
                 response = response_data.json()
                 response = re.sub(r'^<think>.*?</think>', '',
-                                  response['message']['content'], flags=re.DOTALL).lstrip()
+                                  response['response'], flags=re.DOTALL).lstrip()
 
                 print("og", response)
                 items = list_to_items(response)
