@@ -96,6 +96,12 @@
         </li>
       {% endfor %}
     </ul>
+    <form action="/" method="POST">
+      <input type="hidden" name="reset_cookie" value="1">
+      <button type="submit" style="margin-top: 20px; padding: 10px 20px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        New List
+      </button>
+    </form>
   </div>
 </body>
 </html>
