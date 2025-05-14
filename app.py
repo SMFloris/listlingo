@@ -207,22 +207,14 @@ def view_checklist(checklist_url):
 
         # Handle checkbox updates
         if request.method == "POST":
-            updated_items = []
-            for i, item in enumerate(items):
-                # Check if this item was checked
-                checked = request.form.get(f"item_{i+1}") == 'on'
-                for item in items:
-                    item_id = item['id']
-                    checked = request.form.get(f"item_{item_id}") == 'on'
-                    db.execute(
-                        "UPDATE checklist_items SET checked = ? WHERE id = ?",
-                        (int(checked), item_id)
-                    )
-            # Update the database with the new check status
-            db.execute("UPDATE checklist SET items = ? WHERE url = ?",
-                       (json.dumps(updated_items), checklist_url))
+            for item in items:
+                item_id = item['id']
+                checked = request.form.get(f"item_{item_id}") == 'on'
+                db.execute(
+                    "UPDATE checklist_items SET checked = ? WHERE id = ?",
+                    (int(checked), item_id)
+                )
             db.commit()
-            items = updated_items
 
         return render_template("checklist.html", items=items)
     finally:
