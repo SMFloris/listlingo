@@ -213,3 +213,12 @@ def view_checklist(checklist_url):
 
 if __name__ == "__main__":
     app.run(debug=True, port="3030")
+def generate_name_and_summary(response):
+    # Generate a funny name (movie or food themed) with the current date
+    name = f"Shopping List {time.strftime('%Y-%m-%d')}"
+    
+    # Create a short summary of the checklist
+    items = [item['item'] for item in list_to_items(response)]
+    summary = ", ".join(items[:5]) + ("..." if len(items) > 5 else "")
+    
+    return name, summary
