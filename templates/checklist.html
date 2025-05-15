@@ -237,14 +237,16 @@
     </form>
 
     <!-- Share List Button -->
-    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-      <button onclick="shareList()" class="btn-secondary" style="flex: 1;">
-        Share 📱
-      </button>
-      <button onclick="newList()" class="btn-primary" style="flex: 1;">
-        New List
-      </button>
-      <button onclick="openModal()" class="btn-primary" style="flex: 1; margin-top: 20px;">
+    <div style="display: flex; flex-direction: column; gap: 15px; justify-content: center; margin-top: 30px;">
+      <div style="display: flex; gap: 15px; justify-content: center;">
+        <button onclick="shareList()" class="btn-secondary" style="flex: 1;">
+          Share 📱
+        </button>
+        <button onclick="newList()" class="btn-primary" style="flex: 1;">
+          New List
+        </button>
+      </div>
+      <button onclick="openModal()" class="btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
         Add Item ✚
       </button>
     </div>
