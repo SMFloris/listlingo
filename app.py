@@ -295,11 +295,15 @@ def get_checklist_state(checklist_url):
                 "item": row[1],
                 "quantity": row[2],
                 "measurement": row[3],
-                "checked": row[4]
+                "checked": bool(row[4])  # Ensure it's a boolean
             }
             for row in items
         ]
-        return json.dumps({"items": items})
+        return app.response_class(
+            response=json.dumps({"items": items}, ensure_ascii=False),
+            status=200,
+            mimetype='application/json'
+        )
     finally:
         db.close()
 
