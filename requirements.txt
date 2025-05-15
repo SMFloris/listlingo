@@ -1,4 +1,2 @@
-flask
-requests
-uuid
-json
+flask>=2.0.1
+requests>=2.26.0
