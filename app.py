@@ -1,12 +1,11 @@
 from flask import Flask, request, render_template, redirect, url_for
 from prompt import get_name_prompt, get_summary_prompt, get_items_prompt
-import sqlite3
 import requests
 import re
 import time
 import json
 import os
-import db
+import dbutils
 
 app = Flask(__name__)
 
@@ -15,8 +14,6 @@ OLLAMA_URL = os.getenv("OLLAMA_URL", "http://100.112.153.1:11434/api/generate")
 
 # Default model to use
 DEFAULT_MODEL = "qwen3:30b-a3b"
-
-
 
 
 def list_to_items(input_str):
@@ -80,6 +77,22 @@ def generate_name_and_summary(response):
     return name, summary
 
 
+def generate_list_items(user_input):
+    payload = {
+        "model": DEFAULT_MODEL,
+        "stream": False,
+        "prompt": get_items_prompt(user_input),
+    }
+    response_data = requests.post(
+        OLLAMA_URL, json=payload, stream=False)
+    response = response_data.json()
+    response = re.sub(r'^<think>.*?</think>', '',
+                      response['response'], flags=re.DOTALL).lstrip()
+
+    items = list_to_items(response)
+    return items
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     # Check for cookie on GET request
@@ -93,28 +106,13 @@ def index():
         user_input = request.form.get("input_text", "")
         if user_input:
             try:
-                # Send request to Ollama
-                payload = {
-                    "model": DEFAULT_MODEL,
-                    "stream": False,
-                    "prompt": get_items_prompt(user_input),
-                }
-                response_data = requests.post(
-                    OLLAMA_URL, json=payload, stream=False)
-                response = response_data.json()
-                response = re.sub(r'^<think>.*?</think>', '',
-                                  response['response'], flags=re.DOTALL).lstrip()
-
-                print("og", response)
-                items = list_to_items(response)
-                print("caca", items)
+                items = generate_list_items(user_input)
                 # Generate name and summary
                 name, summary = generate_name_and_summary(response)
 
-                # Save to database
                 # Generate a unique URL
                 url = "checklist_" + str(int(time.time()))
-                save_checklist(url, items, name, summary)
+                dbutils.save_checklist(url, items, name, summary)
                 # Set cookie and redirect
                 resp = redirect(url_for('view_checklist', checklist_url=url))
                 resp.set_cookie('last_checklist', url, max_age=86400, path='/')
@@ -126,7 +124,7 @@ def index():
 
 @app.route("/checklist/<checklist_url>", methods=["GET", "POST"])
 def view_checklist(checklist_url):
-    db = get_db()
+    db = dbutils.get_db()
     try:
         # Fetch checklist information
         checklist = db.execute(
@@ -170,7 +168,7 @@ def view_checklist(checklist_url):
 @app.route("/checklist/<checklist_url>/state", methods=["GET"])
 def get_checklist_state(checklist_url):
     """Endpoint to get the current state of a checklist"""
-    db = get_db()
+    db = dbutils.get_db()
     try:
         # Fetch items from the new table
         items = db.execute(

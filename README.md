@@ -1,6 +1,6 @@
 # Shopping List Generator
 
-A web application that transforms unstructured shopping list input into organized, categorized shopping lists using the Qwen3:30b-a3b model from Ollama.
+A web application that transforms unstructured shopping list input into organized, categorized shopping lists using the Qwen3:30b-a3b model running on Ollama.
 
 ## Overview
 

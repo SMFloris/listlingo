@@ -1,11 +1,6 @@
 import sqlite3
 import os
 
-# Ollama server URL
-OLLAMA_URL = os.getenv("OLLAMA_URL", "http://100.112.153.1:11434/api/generate")
-
-# Default model to use
-DEFAULT_MODEL = "qwen3:30b-a3b"
 
 def get_db():
     """Connect to the SQLite database."""
@@ -32,6 +27,7 @@ def get_db():
         )
     ''')
     return conn
+
 
 def save_checklist(url, items, name, summary):
     """Save a checklist to the database with individual items."""
