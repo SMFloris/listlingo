@@ -23,7 +23,6 @@ This web application transforms raw user input into a clean, organized shopping 
 
 - Python 3.11+
 - Ollama with Qwen3:30b-a3b model installed
-- SQLite database
 
 ## Usage
 
