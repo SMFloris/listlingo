@@ -9,7 +9,7 @@ import os
 app = Flask(__name__)
 
 # Ollama server URL
-OLLAMA_URL = "http://100.112.153.1:11434/api/generate"
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://100.112.153.1:11434/api/generate")
 
 # Default model to use
 DEFAULT_MODEL = "qwen3:30b-a3b"
