@@ -241,7 +241,7 @@ def view_checklist(checklist_url):
     try:
         # Fetch checklist information
         checklist = db.execute(
-            "SELECT name, summary FROM checklist WHERE url = ?",
+            "SELECT name, summary, url FROM checklist WHERE url = ?",
             (checklist_url,)
         ).fetchone()
 
