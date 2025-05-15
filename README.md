@@ -1,86 +1,96 @@
-# Shopping List Generator
+# ListLingo — *Talk Shop, Literally.*
 
-A web application that transforms unstructured shopping list input into organized, categorized shopping lists using the Qwen3:30b-a3b model running on Ollama.
+**ListLingo** is a voice-powered shopping list assistant that transforms your spoken input into a structured, categorized list organized by grocery aisle — then lets you share it with friends. Powered by the Qwen3:30b-a3b LLM running on Ollama.
 
-## Overview
+## 🛒 What It Does
 
-This project demonstrates natural language processing capabilities for shopping list organization. It provides a RESTful API for managing shopping lists with features including item categorization, structured formatting, and creative naming.
+Dictate a messy list like:
 
-## Features
+> "Need 2 liters of milk, a couple of avocados, about a kilo of rice, maybe oat milk, and chocolate for Oana."
 
-- Natural language input processing for shopping lists
-- Automatic item categorization and sorting
-- AI-generated creative names and summaries
-- Persistent checklist storage with SQLite
-- RESTful API for checklist management
-- Docker containerization support
+And get back:
 
-## Getting Started
+* Milk x 2l
+* Oat Milk x 1
+* Avocados x 2
+* Rice x 1kg
+* Chocolate (for Oana) x 1
+
+All intelligently sorted and ready to check off, edit, or send to your shopping crew.
+
+## ✨ Features
+
+* 🎙️ **Voice-friendly natural language input**
+* 🧠 **LLM-powered organization and sorting by aisle**
+* 💾 **Persistent checklists with SQLite**
+* 🐳 **Docker-ready deployment**
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Python 3.11+
-- Ollama runtime with Qwen3:30b-a3b model
-- SQLite database (included in repository)
+* Python 3.11+
+* [Ollama](https://ollama.com) with `qwen3:30b-a3b` model
+* SQLite (included)
 
 ### Installation
 
-1. Clone the repository:
+Clone the repo:
+
 ```bash
-git clone https://github.com/yourusername/shopping-list-generator.git
-cd shopping-list-generator
+git clone https://github.com/smfloris/listlingo.git
+cd listlingo
 ```
 
-2. Install dependencies:
+Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Start Ollama and ensure the Qwen3:30b-a3b model is available:
+Start Ollama with the model:
+
 ```bash
 ollama run qwen3:30b-a3b
 ```
 
-## Usage
-
-### Running Locally
+### Run Locally
 
 ```bash
 python app.py
 ```
 
-Access the application at `http://localhost:3030`
+Access the app at: [http://localhost:3030](http://localhost:3030)
 
-### Docker Support
+### Run with Docker
 
-Build the Docker image:
 ```bash
-docker build -t shopping-list-app .
-```
-
-Run the container:
-```bash
+docker build -t listlingo .
 docker run -d \
   -p 3030:3030 \
   -e OLLAMA_URL="http://host.docker.internal:11434/api/generate" \
   -v $(pwd)/db:/app/db \
-  --name shopping-list-app \
-  shopping-list-app
+  --name listlingo \
+  listlingo
 ```
 
-## Architecture
+## 🧱 Architecture
 
-1. User submits unstructured shopping list input
-2. Application processes input using Qwen3:30b-a3b model
-3. Model returns structured shopping list format
-4. Application generates creative name/summary pair
-5. Checklist stored in SQLite database
-6. Users can view and update checklists via API
+1. 🎙️ Voice input - with Android/iOs voice typing
+2. 🤖 LLM parses, categorizes and sorts items
+3. 💾 Data stored in SQLite
+4. 🔁 API for reading/updating lists
+5. 📤 Optional list sharing with friends
 
-## Contributing
+## 📄 License
 
-Please read our [CONTRIBUTING.md](CONTRIBUTING.md) guide for details on how to contribute to this project.
+MIT — see [LICENSE](LICENSE) for details.
 
-## License
+## Motivation
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Almost the whole thing was vibe-coded using [Aider.chat](https://aider.chat) with help from Qwen3 and [Ollama](https://ollama.com).
+This was meant as an experiment to see how far the local models and tooling have come.
+Code quality-wise, I'm not particularly impressed - but the whole thing works anyway. My own modifications were very minimal and only in one particalar case I HAD to intervene since the AI was going in circles.
+
+Other than the quality of the code itself - the tooling was amazing. Aider is a great tool, Ollama is invaluable and Qwen3 proved to be good junior dev.
+
