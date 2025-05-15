@@ -317,4 +317,4 @@ def get_checklist_state(checklist_url):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port="3030")
+    app.run(port="3030", host="0.0.0.0")
