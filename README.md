@@ -36,3 +36,27 @@ This web application transforms raw user input into a clean, organized shopping 
 ## Project Info
 
 This project was an experiment using Aider chat and Qwen3:30b-a3b model. I was very pleased with the result - 90% of the code was written by AI.
+
+## 🐳 Docker Support
+
+### Build the Docker Image
+
+```bash
+docker build -t shopping-list-app .
+```
+
+### Run the Container
+
+```bash
+docker run -d \
+  -p 3030:3030 \
+  -e OLLAMA_URL="http://host.docker.internal:11434/api/generate" \
+  -v $(pwd)/db:/app/db \
+  --name shopping-list-app \
+  shopping-list-app
+```
+
+**Notes:**
+- Ensure Ollama is running on your host machine with the `qwen3:30b-a3b` model
+- The `-v` flag persists the database across container restarts
+- `host.docker.internal` allows the container to reach Ollama on the host
