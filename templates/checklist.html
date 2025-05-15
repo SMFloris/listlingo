@@ -155,8 +155,14 @@
     function copyLink() {
       navigator.clipboard.writeText(window.location.href)
         .then(() => {
+          // Explicitly hide the modal using class or style
+          const shareModal = document.getElementById('shareModal');
+          if (shareModal) {
+            shareModal.style.display = 'none';
+          }
+
+          // Show toaster
           document.getElementById('toaster').style.display = 'flex';
-          document.getElementById('shareModal').style.display = 'none';
           setTimeout(() => {
             document.getElementById('toaster').style.display = 'none';
           }, 3000);
