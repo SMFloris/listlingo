@@ -99,17 +99,19 @@ def list_to_items(input_str):
 def get_name_prompt(response):
     return f"""
     You are a creative assistant that generates funny, movie or food-themed names for shopping lists.
-    The name should be in English, include an emoji, and be humorous.
+    The name should be in English, include an emoji, be humorous. Keep it short!
+    Do not mention the shopping list items at all.
     Generate a funny name for this shopping list:
-    "{response}" /no-think
+    {response} /no-think
     """
 
 
 def get_summary_prompt(response):
     return f"""
     You are a stand-up comedian that creates punchlines or jokes about shopping lists.
-    Create a funny movie-style punchline about this shopping list: "{response}"
-    Just give me the punchline, no extra text. /no-think
+    Create a funny movie-style punchline from a shopping list.
+    Just give me the punchline, no extra text. Do not mention the shopping list items at all. The shorter the better.
+    The shopping list is: {response} /no-think
     """
 
 
@@ -124,6 +126,8 @@ def generate_name_and_summary(response):
     }
     name_response = requests.post(OLLAMA_URL, json=name_payload, stream=False)
     name = name_response.json()['response'].strip()
+    name = re.sub(r'^<think>.*?</think>', '',
+                  name, flags=re.DOTALL).lstrip().strip('"')
 
     # Generate summary
     summary_prompt = get_summary_prompt(response)
@@ -135,6 +139,8 @@ def generate_name_and_summary(response):
     summary_response = requests.post(
         OLLAMA_URL, json=summary_payload, stream=False)
     summary = summary_response.json()['response'].strip()
+    summary = re.sub(r'^<think>.*?</think>', '',
+                     summary, flags=re.DOTALL).lstrip().strip('"')
 
     return name, summary
 
@@ -238,7 +244,7 @@ def view_checklist(checklist_url):
             "SELECT name, summary FROM checklist WHERE url = ?",
             (checklist_url,)
         ).fetchone()
-        
+
         # Fetch items from the new table
         items = db.execute(
             "SELECT id, item, quantity, measurement, checked FROM checklist_items WHERE checklist_url = ?",
