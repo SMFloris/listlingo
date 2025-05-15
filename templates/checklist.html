@@ -264,7 +264,7 @@
           .then(data => {
             // Update checkboxes based on the received state
             data.items.forEach(item => {
-              const checkbox = document.querySelector('input#'+ item.id + '[type="checkbox"]');
+              const checkbox = document.querySelector(`input#item_${item.id}[type="checkbox"]`);
               if (checkbox) {
                 checkbox.checked = item.checked;
               }
