@@ -299,9 +299,17 @@ def get_checklist_state(checklist_url):
             }
             for row in items
         ]
+        # Return proper JSON response with error handling
         return app.response_class(
             response=json.dumps({"items": items}, ensure_ascii=False),
             status=200,
+            mimetype='application/json'
+        )
+    except Exception as e:
+        # Return error response if something goes wrong
+        return app.response_class(
+            response=json.dumps({"error": str(e)}),
+            status=500,
             mimetype='application/json'
         )
     finally:
