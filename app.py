@@ -316,5 +316,12 @@ def get_checklist_state(checklist_url):
         db.close()
 
 
+@app.route("/reset", methods=["POST"])
+def reset():
+    """Handle AJAX request to reset the checklist and redirect"""
+    resp = redirect(url_for('index'))
+    resp.set_cookie('last_checklist', '', max_age=0, path='/')
+    return resp
+
 if __name__ == "__main__":
     app.run(port="3030", host="0.0.0.0")
