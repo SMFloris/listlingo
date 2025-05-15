@@ -34,7 +34,7 @@ This web application transforms raw user input into a clean, organized shopping 
 
 ## Project Info
 
-This project was an experiment using Aider chat and Qwen3:30b-a3b model. I was very pleased with the result - 90% of the code was written by AI.
+This project was an experiment using Aider.chat and Ollama with the qwen3:30b-a3b model. It's designed for voice-to-text dictation use cases where users can speak their shopping list and get a formatted result.
 
 ## 🐳 Docker Support
 
@@ -56,6 +56,6 @@ docker run -d \
 ```
 
 **Notes:**
-- Ensure Ollama is running on your host machine with the `qwen3:30b-a3b` model
-- The `-v` flag persists the database across container restarts
-- `host.docker.internal` allows the container to reach Ollama on the host
+- Ensure Ollama is running on your host machine with the qwen3:30b-a3b model
+- The -v flag persists the database across container restarts
+- host.docker.internal allows the container to reach Ollama on the host
