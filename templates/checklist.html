@@ -249,5 +249,30 @@
     </div>
   </div>
   <div id="toaster">Link copied to clipboard!</div>
+  <!-- Polling script -->
+  <script>
+    // Polling function to check for updates every 5 seconds
+    function startPolling() {
+      setInterval(() => {
+        fetch(`{{ url_for('get_checklist_state', checklist_url=checklist.url) }}`)
+          .then(response => response.json())
+          .then(data => {
+            // Update checkboxes based on the received state
+            data.items.forEach(item => {
+              const checkbox = document.getElementById(`item_${item.id}`);
+              if (checkbox) {
+                checkbox.checked = item.checked;
+              }
+            });
+          })
+          .catch(error => {
+            console.error('Polling error:', error);
+          });
+      }, 5000);
+    }
+
+    // Start polling when the page loads
+    window.onload = startPolling;
+  </script>
 </body>
 </html>

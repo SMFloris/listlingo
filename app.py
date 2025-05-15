@@ -278,5 +278,31 @@ def view_checklist(checklist_url):
         db.close()
 
 
+@app.route("/checklist/<checklist_url>/state", methods=["GET"])
+def get_checklist_state(checklist_url):
+    """Endpoint to get the current state of a checklist"""
+    db = get_db()
+    try:
+        # Fetch items from the new table
+        items = db.execute(
+            "SELECT id, item, quantity, measurement, checked FROM checklist_items WHERE checklist_url = ?",
+            (checklist_url,)
+        ).fetchall()
+        # Convert to list of dictionaries for template compatibility
+        items = [
+            {
+                "id": row[0],
+                "item": row[1],
+                "quantity": row[2],
+                "measurement": row[3],
+                "checked": row[4]
+            }
+            for row in items
+        ]
+        return json.dumps({"items": items})
+    finally:
+        db.close()
+
+
 if __name__ == "__main__":
     app.run(debug=True, port="3030")
