@@ -207,7 +207,7 @@
   </script>
 </head>
 <body>
-  <div class="container">
+  <div class="container" style="position: relative;">
     <h1>🛒 {{ checklist.name }}</h1>
     <div class="checklist-info">
       <p>{{ checklist.summary }}</p>
@@ -237,19 +237,29 @@
     </form>
 
     <!-- Share List Button -->
-    <div style="display: flex; flex-direction: column; gap: 15px; justify-content: center; margin-top: 30px;">
-      <div style="display: flex; gap: 15px; justify-content: center;">
-        <button onclick="shareList()" class="btn-secondary" style="flex: 1;">
-          Share 📱
-        </button>
-        <button onclick="newList()" class="btn-primary" style="flex: 1;">
-          New List
-        </button>
-      </div>
-      <button onclick="openModal()" class="btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
-        Add Item ✚
-      </button>
-    </div>
+    <button
+      onclick="openModal()"
+      style="
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        z-index: 10;
+      "
+    >
+      +
+    </button>
     
     <script>
       function openModal() {
