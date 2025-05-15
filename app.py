@@ -211,5 +211,31 @@ def reset():
     return resp
 
 
+@app.route("/add_item", methods=["POST"])
+def add_item():
+    item = request.form.get("item")
+    checklist_url = request.form.get("checklist_url")
+
+    if not item or not checklist_url:
+        return "Missing required parameters", 400
+
+    # Use generate_list_items to process the item
+    items = generate_list_items(item)
+
+    db = dbutils.get_db()
+    try:
+        for item_data in items:
+            db.execute(
+                "INSERT INTO checklist_items (checklist_url, item, quantity, measurement, checked) VALUES (?, ?, ?, ?, 0)",
+                (checklist_url, item_data["item"], item_data["quantity"], item_data["measurement"]),
+            )
+        db.commit()
+        return "Item(s) added successfully", 200
+    except Exception as e:
+        return f"Error adding item: {str(e)}", 500
+    finally:
+        db.close()
+
+
 if __name__ == "__main__":
     app.run(debug=True, port="3030", host="0.0.0.0")
