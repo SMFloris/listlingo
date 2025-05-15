@@ -1,51 +1,64 @@
 # Shopping List Generator
 
-This web application transforms raw user input into a clean, organized shopping list using the Qwen3:30b-a3b model from Ollama.
+A web application that transforms unstructured shopping list input into organized, categorized shopping lists using the Qwen3:30b-a3b model from Ollama.
+
+## Overview
+
+This project demonstrates natural language processing capabilities for shopping list organization. It provides a RESTful API for managing shopping lists with features including item categorization, structured formatting, and creative naming.
 
 ## Features
 
-- Converts unstructured shopping list input into a formatted list
-- Automatically categorizes and sorts items
-- Generates funny, movie-themed names and summaries for shopping lists
-- Saves checklists with their items in a database
-- Allows viewing and updating checklist items
+- Natural language input processing for shopping lists
+- Automatic item categorization and sorting
+- AI-generated creative names and summaries
+- Persistent checklist storage with SQLite
+- RESTful API for checklist management
+- Docker containerization support
 
-## How It Works
+## Getting Started
 
-1. Users input their shopping list items in natural language
-2. The app processes the input using the Qwen3:30b-a3b model
-3. The model returns a formatted shopping list
-4. The app generates a funny name and summary for the list
-5. The checklist is saved in a database with its items
-6. Users can view and update their checklists
-
-## Requirements
+### Prerequisites
 
 - Python 3.11+
-- Ollama with Qwen3:30b-a3b model installed
+- Ollama runtime with Qwen3:30b-a3b model
+- SQLite database (included in repository)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/shopping-list-generator.git
+cd shopping-list-generator
+```
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Start Ollama and ensure the Qwen3:30b-a3b model is available:
+```bash
+ollama run qwen3:30b-a3b
+```
 
 ## Usage
 
-1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Start Ollama and ensure the Qwen3:30b-a3b model is available
-4. Run the app: `python app.py`
-5. Access the app at `http://localhost:3030`
+### Running Locally
 
-## Project Info
+```bash
+python app.py
+```
 
-This project was an experiment using Aider.chat and Ollama with the qwen3:30b-a3b model. It's designed for voice-to-text dictation use cases where users can speak their shopping list and get a formatted result.
+Access the application at `http://localhost:3030`
 
-## 🐳 Docker Support
+### Docker Support
 
-### Build the Docker Image
-
+Build the Docker image:
 ```bash
 docker build -t shopping-list-app .
 ```
 
-### Run the Container
-
+Run the container:
 ```bash
 docker run -d \
   -p 3030:3030 \
@@ -55,7 +68,19 @@ docker run -d \
   shopping-list-app
 ```
 
-**Notes:**
-- Ensure Ollama is running on your host machine with the qwen3:30b-a3b model
-- The -v flag persists the database across container restarts
-- host.docker.internal allows the container to reach Ollama on the host
+## Architecture
+
+1. User submits unstructured shopping list input
+2. Application processes input using Qwen3:30b-a3b model
+3. Model returns structured shopping list format
+4. Application generates creative name/summary pair
+5. Checklist stored in SQLite database
+6. Users can view and update checklists via API
+
+## Contributing
+
+Please read our [CONTRIBUTING.md](CONTRIBUTING.md) guide for details on how to contribute to this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
