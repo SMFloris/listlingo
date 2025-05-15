@@ -2,6 +2,9 @@
 
 **ListLingo** is a voice-powered shopping list assistant that transforms your spoken input into a structured, categorized list organized by grocery aisle — then lets you share it with friends. Powered by the Qwen3:30b-a3b LLM running on Ollama.
 
+![Main View](docs/main_view.png)
+![List View](docs/list_view.png)
+
 ## 🛒 What It Does
 
 Dictate a messy list like:
