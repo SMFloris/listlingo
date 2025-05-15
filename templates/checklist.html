@@ -248,6 +248,51 @@
         Add Item ✚
       </button>
     </div>
+    
+    <script>
+      function openModal() {
+        document.getElementById('addItemModal').style.display = 'flex';
+        document.getElementById('newItemInput').value = '';
+      }
+
+      function closeModal() {
+        document.getElementById('addItemModal').style.display = 'none';
+      }
+
+      function addItem() {
+        const input = document.getElementById('newItemInput');
+        const newItem = input.value.trim();
+        if (newItem === '') {
+          alert('Please enter an item');
+          return;
+        }
+
+        // Send the new item to the backend
+        fetch('/add_item', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `item=${encodeURIComponent(newItem)}&checklist_url=${encodeURIComponent(window.location.pathname.split('/').pop())}`
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(html => {
+          // Reload the page to show the updated checklist
+          window.location.reload();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to add item. Please try again.');
+        });
+
+        closeModal();
+      }
+    </script>
 
     <script>
       function newList() {
