@@ -316,20 +316,5 @@ def get_checklist_state(checklist_url):
         db.close()
 
 
-@app.route("/checklists")
-def list_checklists():
-    """List all saved checklists"""
-    db = get_db()
-    try:
-        checklists = db.execute("""
-            SELECT url, name, summary, created_at 
-            FROM checklist 
-            ORDER BY created_at DESC
-        """).fetchall()
-        return render_template("checklist_list.html", checklists=checklists)
-    finally:
-        db.close()
-
-
 if __name__ == "__main__":
     app.run(debug=True, port="3030")
