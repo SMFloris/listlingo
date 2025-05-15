@@ -227,7 +227,8 @@ def add_item():
         for item_data in items:
             db.execute(
                 "INSERT INTO checklist_items (checklist_url, item, quantity, measurement, checked) VALUES (?, ?, ?, ?, 0)",
-                (checklist_url, item_data["item"], item_data["quantity"], item_data["measurement"]),
+                (checklist_url, item_data["item"],
+                 item_data["quantity"], item_data["measurement"]),
             )
         db.commit()
         return "Item(s) added successfully", 200
@@ -238,4 +239,4 @@ def add_item():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port="3030", host="0.0.0.0")
+    app.run(port="3030", host="0.0.0.0")
