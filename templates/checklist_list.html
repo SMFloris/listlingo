@@ -12,3 +12,40 @@
     </ul>
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checklist List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>_saved Checklists</h1>
+    <ul>
+        {% for checklist in checklists %}
+            <li><a href="/checklist/{{ checklist.url }}">{{ checklist.name }}</a> - {{ checklist.summary }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
