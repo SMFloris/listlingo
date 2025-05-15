@@ -251,12 +251,9 @@
         // Show loading state
         const modal = document.getElementById('confirmModal');
         modal.style.display = 'none';
-        const loadingDiv = document.getElementById('loading');
-        loadingDiv.style.display = 'flex';
-        document.getElementById('loadingMessage').textContent = 'Creating new list...';
 
         // Send AJAX request to reset the checklist
-        fetch('/', {
+        fetch('/reset', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -276,7 +273,6 @@
         .catch(error => {
           console.error('Error:', error);
           // Hide loading state
-          loadingDiv.style.display = 'none';
           alert('Failed to create new list. Please try again.');
         });
       }
