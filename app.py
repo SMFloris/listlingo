@@ -25,6 +25,8 @@ def list_to_items(input_str):
             item_part, quantity_part = item.split('x', 1)
             item_name = item_part.strip()
             quantity_part = quantity_part.strip()
+            match = re.search(r"\((.*?)\)", quantity_part)
+            category = match.group(1) if match else "unknown"
 
             # Use regex to extract quantity and measurement from the quantity part
             match = re.match(r'(\d+)(\w*)', quantity_part)
@@ -34,7 +36,8 @@ def list_to_items(input_str):
                 result.append({
                     'item': item_name,
                     'quantity': quantity,
-                    'measurement': measurement
+                    'measurement': measurement,
+                    'category': category
                 })
         else:
             # No 'x' found, assume quantity is 1 and measurement is 'buc'
@@ -43,7 +46,10 @@ def list_to_items(input_str):
                 'quantity': '1',
                 'measurement': 'buc'
             })
-
+    order = ['electronics', 'office-supplies', 'household', 'cosmetics', 'toys', 'non-alcoholic', 'alcoholic', 'sweets', 'dairy',
+             'produce', 'fast-food']
+    category_order = {cat: i for i, cat in enumerate(order)}
+    result.sort(key=lambda x: category_order.get(x['category'], len(order)))
     return result
 
 
@@ -54,7 +60,7 @@ def generate_name_and_summary(response):
     name_payload = {
         "model": DEFAULT_MODEL,
         "stream": False,
-        "prompt": name_prompt
+        "prompt": name_prompt,
     }
     name_response = requests.post(OLLAMA_URL, json=name_payload, stream=False)
     name = name_response.json()['response'].strip()
@@ -82,10 +88,17 @@ def generate_list_items(user_input):
         "model": DEFAULT_MODEL,
         "stream": False,
         "prompt": get_items_prompt(user_input),
+        "options": {
+            "temperature": 1.2,
+            "top_k": 40,
+            "top_p": 0.8,
+            "repeat_penalty": 1
+        }
     }
     response_data = requests.post(
         OLLAMA_URL, json=payload, stream=False)
     response = response_data.json()
+    print(response)
     response = re.sub(r'^<think>.*?</think>', '',
                       response['response'], flags=re.DOTALL).lstrip()
 
