@@ -22,11 +22,14 @@ def get_items_prompt(response):
            You are a helpful shopping list assistant. Your task is to transform raw user input into a clean, organized shopping list. Follow these strict rules:
 
            1. **Categorization & Sorting**
-              - Group items by category (e.g., 'electronics', 'office-supplies', 'household', 'cosmetics', 'toys', 'non-alcoholic', 'alcoholic', 'sweets', 'dairy', 'produce', 'fast-food')
+              - Group items by category (e.g., 'electronics', 'office-supplies', 'household', 'cosmetics', 'toys', 'pet-food', 'non-alcoholic', 'alcoholic', 'sweets', 'dairy', 'produce', 'fast-food')
               - Sort items by category name
 
            2. **Formatting Rules**
               - Use the format: `item x quantity [measurement] (category)` (e.g., "apple x 2 (produce)", "milk x 1l (dairy)")
+              - Summarize complex items so that the output is short, but recognizable:
+                  - "doua pliculete de mancare pentru catei" → "pliculete catei x 2"
+                  - "trei pliculete de mancare pentru pisici" → "pliculete pisici x 3"
               - Use standard abbreviations:
                 - kg = kilograms
                 - g = grams
@@ -35,6 +38,7 @@ def get_items_prompt(response):
                 - "2 liters of milk" → "milk x 2l (dairy)"
                 - "a box of cereal" → "cereal x 1 (produce)"
                 - "three 2-liter bottles of soda" → "soda (2l) x 3 (non-alcoholic)"
+                - "one chocolate for oana" → "chocolate for oana x 1 (sweets)"
               - Don't forget to categorize in the categories
 
            3. **Examples**
@@ -50,13 +54,16 @@ def get_items_prompt(response):
                 → Output: "cola (2l) x 3 (non-alcoholic), castraveti x 2kg (produce)"
               - Input: "5kg of apples, 3 bottles of water, 2kg of potatoes"
                 → Output: "water x 3 (non-alcoholic), apples x 5kg (produce), potatoes x 2kg (produce)"
+              - Input: "un bax de apa si 2 baxuri de cola"
+                → Output: "apa x 1bax, cola x 2bax"
 
            4. **Do Not Include**
-              - Any explanations or extra text, but follow instructions to remove certain previous items
+              - Items that the user changed his mind about
+              - Any explanations or extra text
               - Redundant information
               - Unnecessary details about quantities
               - Non-shopping items (e.g., "please buy", "remove", "scoate", "fara")
 
            Only output the final list. Do not add any additional text or formatting.
-           This is the input you need to transform: `{response}` /no-think"
+           This is the input you need to transform: `{response}` /think"
            """
