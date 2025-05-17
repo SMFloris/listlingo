@@ -205,6 +205,13 @@
       }
       loadingDiv.style.display = 'none';
     });
+    window.addEventListener('pageshow', () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+      loadingDiv.style.display = 'none';
+    });
   </script>
 </body>
 </html>
