@@ -22,14 +22,19 @@ def get_items_prompt(response):
            You are a helpful shopping list assistant. Your task is to transform raw user input into a clean, organized shopping list. Follow these strict rules:
 
            1. **Categorization & Sorting**
-              - Group items by category (e.g., 'electronics', 'office-supplies', 'household', 'cosmetics', 'toys', 'pet-food', 'non-alcoholic', 'alcoholic', 'sweets', 'dairy', 'produce', 'fast-food')
+              - Group items by category (e.g., 'electronics', 'office-supplies', 'household', 'cosmetics', 'toys', 'pet-food', 'non-alcoholic', 'alcoholic', 'sweets', 'dairy', 'produce', 'fast-food', 'misc')
               - Sort items by category name
 
            2. **Formatting Rules**
               - Use the format: `item x quantity [measurement] (category)` (e.g., "apple x 2 (produce)", "milk x 1l (dairy)")
               - Summarize complex items so that the output is short, but recognizable:
-                  - "doua pliculete de mancare pentru catei" → "pliculete catei x 2"
-                  - "trei pliculete de mancare pentru pisici" → "pliculete pisici x 3"
+                  - "doua pliculete de mancare pentru catei" → "pliculete pentru catei x 2 (pet-food)"
+                  - "trei pliculete de mancare pentru pisici" → "pliculete pentru pisici x 3 (pet-food)"
+                  - "trei pliculete pentru pisici" → "pliculete pentru pisici x 3 (pet-food)"
+                  - "doua pliculete pentru catei" → "pliculete pentru catei x 2 (pet-food)"
+                  - "one chocolate for oana" → "chocolate for oana x 1 (sweets)"
+                  - "one pack of cigarretes for floris" → "cigarretes for floris x 1 (misc)"
+                  - "one pack of gum for my mother" → "gum for mother x 1 (misc)"
               - Use standard abbreviations:
                 - kg = kilograms
                 - g = grams
@@ -38,7 +43,6 @@ def get_items_prompt(response):
                 - "2 liters of milk" → "milk x 2l (dairy)"
                 - "a box of cereal" → "cereal x 1 (produce)"
                 - "three 2-liter bottles of soda" → "soda (2l) x 3 (non-alcoholic)"
-                - "one chocolate for oana" → "chocolate for oana x 1 (sweets)"
               - Don't forget to categorize in the categories
 
            3. **Examples**
